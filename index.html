@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo de Escolhas Agrícolas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .game-container {
+      padding: 20px;
+    }
+    .question-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #final-score p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="start-btn" onclick="startGame()">Iniciar Jogo</button>
+
+  <div id="game-container" class="hidden">
+    <div id="seed-choice" class="question-box">
+      <h2>Escolha o tipo de semente:</h2>
+      <button onclick="selectSeed('convencional')">Semente Convencional</button>
+      <button onclick="selectSeed('orgânica')">Semente Orgânica</button>
+      <button onclick="selectSeed('transgênica')">Semente Transgênica</button>
+    </div>
+    
+    <div id="pest-attack" class="question-box hidden">
+      <h2>ATENÇÃO: Um ataque de lagartas está ocorrendo!</h2>
+      <button onclick="handlePestChoice('defensivo')">Usar defensivo agrícola</button>
+      <button onclick="handlePestChoice('alternativo')">Aplicar alternativos biológicos</button>
+      <button onclick="handlePestChoice('continuar')">Fé na mortes das lagartas</button>
+    </div>
+    
+    <div id="fertilization" class="question-box hidden">
+      <h2>Escolha o tipo de adubação:</h2>
+      <button onclick="handleFertilization('convencional')">Adubação Convencional</button>
+      <button onclick="handleFertilization('verde')">Adubação Verde</button>
+      <button onclick="handleFertilization('fe')">Apenas fé na terra</button>
+    </div>
+
+    <div id="game-over" class="question-box hidden">
+      <h2>Game Over</h2>
+      <p id="game-over-message"></p>
+      <button onclick="restartGame()">Reiniciar Jogo</button>
+    </div>
+    
+    <div id="final-screen" class="question-box hidden">
+      <h2>Parabéns, você completou o jogo!</h2>
+      <div id="final-score">
+        <p>Lucro: <span id="score-lucro"></span>%</p>
+        <p>Produtividade: <span id="score-produtividade"></span>%</p>
+        <p>Solos: <span id="score-solos"></span>%</p>
+      </div>
+      <button onclick="restartGame()">Reiniciar Jogo</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedSeed = '';
+    let selectedFertilization = '';
+
+    function startGame() {
+      document.getElementById("start-btn").classList.add("hidden");
+      document.getElementById("game-container").classList.remove("hidden");
+      document.getElementById("seed-choice").classList.remove("hidden");
+    }
+
+    function selectSeed(seedType) {
+      selectedSeed = seedType;
+      document.getElementById("seed-choice").classList.add("hidden");
+      document.getElementById("pest-attack").classList.remove("hidden");
+    }
+
+    function handlePestChoice(choice) {
+      if (choice === 'defensivo' && selectedSeed === 'orgânica') {
+        gameOver("Defensivos não são permitidos na agricultura orgânica!");
+      } else {
+        document.getElementById("pest-attack").classList.add("hidden");
+        document.getElementById("fertilization").classList.remove("hidden");
+      }
+    }
+
+    function handleFertilization(type) {
+      selectedFertilization = type;
+      showFinalScreen();
+    }
+
+    function gameOver(message) {
+      hideAllScreens();
+      document.getElementById("game-over").classList.remove("hidden");
+      document.getElementById("game-over-message").textContent = message;
+    }
+
+    function showFinalScreen() {
+      hideAllScreens();
+      document.getElementById("final-screen").classList.remove("hidden");
+      
+      let lucro, produtividade, solos;
+      if (selectedFertilization === 'convencional') {
+        lucro = getRandomInt(70, 90);
+        produtividade = getRandomInt(80, 100);
+        solos = getRandomInt(30, 50);
+      } else if (selectedFertilization === 'verde') {
+        lucro = getRandomInt(60, 80);
+        produtividade = getRandomInt(70, 90);
+        solos = getRandomInt(80, 100);
+      } else {
+        lucro = getRandomInt(10, 30);
+        produtividade = getRandomInt(40, 60);
+        solos = getRandomInt(20, 40);
+      }
+      
+      document.getElementById("score-lucro").textContent = lucro;
+      document.getElementById("score-produtividade").textContent = produtividade;
+      document.getElementById("score-solos").textContent = solos;
+    }
+
+    function hideAllScreens() {
+      document.getElementById("seed-choice").classList.add("hidden");
+      document.getElementById("pest-attack").classList.add("hidden");
+      document.getElementById("fertilization").classList.add("hidden");
+      document.getElementById("game-over").classList.add("hidden");
+      document.getElementById("final-screen").classList.add("hidden");
+    }
+
+    function restartGame() {
+      selectedSeed = '';
+      selectedFertilization = '';
+      hideAllScreens();
+      document.getElementById("start-btn").classList.remove("hidden");
+    }
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  </script>
+</body>
+</html>
