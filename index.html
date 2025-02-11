@@ -300,7 +300,7 @@
       <div id="final-score">
         <p>Lucro: <span id="score-lucro"></span>%</p>
         <p>Produtividade: <span id="score-produtividade"></span>%</p>
-        <p>Sustentabilidade: <span id="score-solos"></span>%</p>
+        <p>Sàúde do solo: <span id="score-solos"></span>%</p>
       </div>
       <p id="feedback"></p>
       <p id="comedic-comment" style="font-style: italic; color: #4CAF50; font-size: 18px;"></p>
@@ -479,7 +479,7 @@ function handlePostHarvest(choice) {
     scoreSolos -= 10;
   }
   document.getElementById("post-harvest").classList.add("hidden");
-  updateDialogue("Boa escolha! Agora é só esperar os resultados. 🌱"); 
+  updateDialogue("Boa escolha! Agora é só colher os resultados. 🌱"); 
   showFinalScore();
 }
 
@@ -492,14 +492,14 @@ function showFinalScore() {
   let feedback = '';
   let comedicComment = '';
   if (scoreLucro > 40 && scoreProdutividade > 40 && scoreSolos > 40) {
-    feedback = 'Excelente trabalho! Você fez escolhas muito boas!';
-    comedicComment = 'Você é o Elon Musk da agricultura! 🚀🌱';
+    feedback = 'Excelente trabalho! Você fez escolhas muito boas! Seu bolso e solo estão felizes.';
+    comedicComment = 'Você é o Elon Musk da agricultura! Seu solo está radiante 🚀🌱';
   } else if (scoreLucro > 25 || scoreProdutividade > 25 || scoreSolos > 25) {
     feedback = 'Bom trabalho, mas há áreas para melhorar!';
-    comedicComment = 'Quase lá! Só falta plantar um pouco mais de café... ☕';
+    comedicComment = 'Quase lá! Só falta plantar um pouco mais de café... ou adubo...ou estudo... ☕';
   } else {
-    feedback = 'Você precisa repensar suas escolhas para melhorar sua fazenda!';
-    comedicComment = 'Parece que você plantou batatas na areia... 🥔🏖️';
+    feedback = 'Você precisa repensar suas escolhas para melhorar sua fazenda e seu solo!';
+    comedicComment = 'Parece que você plantou batatas na areia... até seu solo está depressivo até pela troca🥔🏖️';
   }
   document.getElementById("feedback").textContent = feedback;
   document.getElementById("comedic-comment").textContent = comedicComment;
