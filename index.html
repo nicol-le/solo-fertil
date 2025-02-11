@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #f0f0f0, #d0e8d0); /* Gradiente suave */
+      background: linear-gradient(135deg, #f0f0f0, #d0e8d0);
       text-align: center;
       margin: 0;
       padding: 0;
@@ -76,7 +76,7 @@
       transform: scale(0.95);
     }
 
-    /* Estilo para eventos de dano - alerta */
+    
     .event-box {
       background-color: #FF6347;
       color: white;
@@ -105,7 +105,7 @@
       display: none;
     }
 
-    /* Estilo de alerta vermelho */
+   
     .alert-box {
       background-color: #FF0000;
       color: white;
@@ -123,13 +123,13 @@
       margin: 10px 0;
     }
 
-    /* Ícones */
+
     .icon {
       font-size: 24px;
       margin-right: 10px;
     }
 
-    /* Animação de entrada */
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -139,7 +139,7 @@
       animation: fadeIn 0.5s ease-out;
     }
 
-    /* Progresso do jogo */
+
     .progress-bar {
       width: 80%;
       max-width: 600px;
@@ -180,18 +180,18 @@
       font-weight: bold;
       color: #4CAF50;
     }
-  /* Estilo do personagem e caixa de diálogo */
+ 
 #character-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
   display: flex;
   align-items: flex-end;
-  gap: 30px; /* Reduzi o espaço entre a caixa de diálogo e o personagem */
+  gap: 30px; 
 }
 
 #character img {
-  width: 120px; /* Tamanho aumentado */
+  width: 120px; 
   height: auto;
   animation: float 3s ease-in-out infinite;
 }
@@ -211,20 +211,20 @@
   color: #2E8B57;
   position: relative;
   bottom: 40px;
-  text-align: center; /* Centraliza o texto horizontalmente */
-  display: flex; /* Adicionado para centralização vertical */
-  align-items: center; /* Centraliza verticalmente */
-  justify-content: center; /* Centraliza horizontalmente */
+  text-align: center;
+  display: flex; 
+  align-items: center;
+  justify-content: center; 
 }
 
 #dialogue-box::before {
   content: '';
   position: absolute;
-  bottom: 15px; /* Ajustei a posição vertical do triângulo */
-  left: 20px; /* Posiciona o triângulo à esquerda */
-  border-width: 20px 10px 10px 0; /* Triângulo apontando para a esquerda */
+  bottom: 15px;
+  left: 20px; 
+  border-width: 20px 10px 10px 0; 
   border-style: solid;
-  border-color: transparent white transparent transparent; /* Cor do triângulo */
+  border-color: transparent white transparent transparent; 
 }
   </style>
 </head>
@@ -315,10 +315,9 @@
       <div id="character">
         <img src="sojafeliz.png" alt="Soja feliz" id="soja-img" style="width: 100px; height: auto;">
       </div>
-  
-<!-- Personagem e caixa de diálogo -->
 
-  <script>
+
+ <script>
 
     let scoreLucro = 0;
     let scoreProdutividade = 0;
@@ -332,150 +331,165 @@
       document.getElementById("game-container").classList.remove("hidden");
       document.getElementById("seed-choice").classList.remove("hidden");
     }
-
-    function selectSeed(seedType) {
-      selectedSeed = seedType;
-      document.getElementById("seed-choice").classList.add("hidden");
-      triggerRandomEvent();
-    }
-
-    function triggerRandomEvent() {
-      // Gera um evento aleatório
-      const events = [
-        { name: "Chuva forte", message: "Uma chuva forte está ocorrendo. O que fazer?", options: [
-          { text: "Deixar a chuva agir", impact: { produtividade: -5, solos: 5 } },
-          { text: "Usar irrigação para evitar danos", impact: { produtividade: 10, solos: -5 } },
-          { text: "Cobertura com plástico", impact: { produtividade: -10, solos: 0 } }
-        ]},
-        { name: "Granizo", message: "O granizo está afetando sua plantação. Como reagir?", options: [
-          { text: "Esperar que o granizo passe", impact: { produtividade: -20, solos: -10 } },
-          { text: "Cobertura imediata", impact: { produtividade: 5, solos: 10 } },
-          { text: "Abandonar a plantação", impact: { produtividade: -30, solos: 0 } }
-        ]},
-        { name: "Ataque de lagartas", message: "Lagartas invadiram sua plantação. Como reagir?", options: [
-          { text: "Usar defensivos agrícolas", impact: { produtividade: 10, solos: -15 } },
-          { text: "Usar controle biológico", impact: { produtividade: 5, solos: 5 } },
-          { text: "Deixar as lagartas agirem", impact: { produtividade: -10, solos: 0 } }
-        ]}
-      ];
-
-      currentEvent = events[Math.floor(Math.random() * events.length)];
-      
-      document.getElementById("event-message").textContent = currentEvent.message;
-      document.getElementById("event-option-1").textContent = currentEvent.options[0].text;
-      document.getElementById("event-option-2").textContent = currentEvent.options[1].text;
-      document.getElementById("event-option-3").textContent = currentEvent.options[2].text;
-
-      document.getElementById("event").classList.remove("hidden");
-    }
-
-    function handleEventChoice(choice) {
-      const selectedOption = currentEvent.options[choice - 1];
-      scoreProdutividade += selectedOption.impact.produtividade;
-      scoreSolos += selectedOption.impact.solos;
-      
-      document.getElementById("event").classList.add("hidden");
-      document.getElementById("fertilization").classList.remove("hidden");
-    }
     const dicas = {
-  seed: "Escolha sabiamente! Sementes orgânicas são mais sustentáveis, mas podem ser menos produtivas.",
-  event: "Cuidado com eventos aleatórios! Eles podem afetar sua plantação.",
-  fertilization: "Adubação verde é ótima para o solo, mas pode exigir mais trabalho.",
-  water: "Gotejamento economiza água, mas aspersão é mais rápida!",
-  weed: "Capina manual é sustentável, mas herbicidas são mais eficientes.",
-  rotation: "Rotação diversificada melhora o solo e reduz pragas!",
-  postHarvest: "Incorporar os restos ao solo é a melhor opção para fertilidade!"
+  seed: "Escolha o tipo de semente: orgânicas são sustentáveis, transgênicas são resistentes, e convencionais equilibram custo e produtividade.",
+  
+  event: "Eventos aleatórios podem afetar sua plantação. Escolha uma estratégia que equilibre proteção e sustentabilidade.",
+  
+  fertilization: "A adubação verde melhora o solo, a convencional é mais rápida, e confiar apenas na terra pode ser arriscado.",
+  
+  water: "O gotejamento economiza água, a aspersão é mais rápida, e depender da chuva pode ser imprevisível.",
+  
+  weed: "A capina manual é sustentável, os herbicidas são eficientes, e a cobertura vegetal protege o solo.",
+  
+  rotation: "A rotação diversificada melhora o solo e reduz pragas, enquanto a monocultura pode esgotar os nutrientes.",
+  
+  postHarvest: "Incorporar os restos ao solo enriquece a terra, queimar libera poluentes, e deixar o solo descoberto pode causar erosão."
 };
 
 function updateDialogue(dica) {
   document.getElementById("dialogue-text").textContent = dica;
 }
 
-    function handleFertilization(type) {
-      selectedFertilization = type;
-      document.getElementById("fertilization").classList.add("hidden");
-      updateDialogue(dicas.water);
-      document.getElementById("water-management").classList.remove("hidden");
+function startGame() {
+  document.getElementById("start-btn").classList.add("hidden");
+  document.getElementById("game-container").classList.remove("hidden");
+  document.getElementById("seed-choice").classList.remove("hidden");
+  updateDialogue(dicas.seed); // Exibe a dica inicial
+}
 
-    }
+function selectSeed(seedType) {
+  selectedSeed = seedType;
+  document.getElementById("seed-choice").classList.add("hidden");
+  updateDialogue(dicas.event); // Dica para o evento
+  triggerRandomEvent();
+}
 
-    function handleWaterManagement(choice) {
-      if (choice === 'aspersao') {
-        scoreLucro += 15;
-        scoreProdutividade += 25;
-        scoreSolos += 10;
-      } else if (choice === 'gotejamento') {
-        scoreLucro += 20;
-        scoreProdutividade += 25;
-        scoreSolos += 15;
-      } else {
-        scoreLucro -= 10;
-        scoreProdutividade -= 20;
-        scoreSolos -= 10;
-      }
-      document.getElementById("water-management").classList.add("hidden");
-      updateDialogue(dicas.weed);
-      document.getElementById("weed-management").classList.remove("hidden");
-    }
+function triggerRandomEvent() {
+  const events = [
+    { name: "Chuva forte", message: "Uma chuva forte está ocorrendo. O que fazer?", options: [
+      { text: "Deixar a chuva agir", impact: { produtividade: -5, solos: 5 } },
+      { text: "Usar irrigação para evitar danos", impact: { produtividade: 10, solos: -5 } },
+      { text: "Cobertura com plástico", impact: { produtividade: -10, solos: 0 } }
+    ]},
+    { name: "Granizo", message: "O granizo está afetando sua plantação. Como reagir?", options: [
+      { text: "Esperar que o granizo passe", impact: { produtividade: -20, solos: -10 } },
+      { text: "Cobertura imediata", impact: { produtividade: 5, solos: 10 } },
+      { text: "Abandonar a plantação", impact: { produtividade: -30, solos: 0 } }
+    ]},
+    { name: "Ataque de lagartas", message: "Lagartas invadiram sua plantação. Como reagir?", options: [
+      { text: "Usar defensivos agrícolas", impact: { produtividade: 10, solos: -15 } },
+      { text: "Usar controle biológico", impact: { produtividade: 5, solos: 5 } },
+      { text: "Deixar as lagartas agirem", impact: { produtividade: -10, solos: 0 } }
+    ]}
+  ];
 
-    function handleWeedManagement(choice) {
-      if (choice === 'herbicida') {
-        scoreLucro += 15;
-        scoreProdutividade += 15;
-        scoreSolos -= 10;
-      } else if (choice === 'cobertura') {
-        scoreLucro += 24;
-        scoreProdutividade += 30;
-        scoreSolos += 20;
-      } else {
-        scoreLucro -= 15;
-        scoreProdutividade += 5;
-        scoreSolos += 15;
-      }
-      document.getElementById("weed-management").classList.add("hidden");
-      updateDialogue(dicas.rotation); // Dica para a rotação de culturas
+  currentEvent = events[Math.floor(Math.random() * events.length)];
+  
+  document.getElementById("event-message").textContent = currentEvent.message;
+  document.getElementById("event-option-1").textContent = currentEvent.options[0].text;
+  document.getElementById("event-option-2").textContent = currentEvent.options[1].text;
+  document.getElementById("event-option-3").textContent = currentEvent.options[2].text;
+
+  document.getElementById("event").classList.remove("hidden");
+}
+
+function handleEventChoice(choice) {
+  const selectedOption = currentEvent.options[choice - 1];
+  scoreProdutividade += selectedOption.impact.produtividade;
+  scoreSolos += selectedOption.impact.solos;
+  
+  document.getElementById("event").classList.add("hidden");
+  updateDialogue(dicas.fertilization);
+  document.getElementById("fertilization").classList.remove("hidden");
+}
+
+function handleFertilization(type) {
+  selectedFertilization = type;
+  document.getElementById("fertilization").classList.add("hidden");
+  updateDialogue(dicas.water); 
+  document.getElementById("water-management").classList.remove("hidden");
+}
+
+function handleWaterManagement(choice) {
+  if (choice === 'aspersao') {
+    scoreLucro += 5;
+    scoreProdutividade += 20;
+    scoreSolos -= 10;
+  } else if (choice === 'gotejamento') {
+    scoreLucro += 10;
+    scoreProdutividade += 10;
+    scoreSolos += 15;
+  } else {
+    scoreLucro -= 10;
+    scoreProdutividade -= 20;
+    scoreSolos -= 5;
+  }
+  document.getElementById("water-management").classList.add("hidden");
+  updateDialogue(dicas.weed); // Dica para o controle de plantas daninhas
+  document.getElementById("weed-management").classList.remove("hidden");
+}
+
+function handleWeedManagement(choice) {
+  if (choice === 'herbicida') {
+    scoreLucro += 5;
+    scoreProdutividade += 15;
+    scoreSolos -= 20;
+  } else if (choice === 'cobertura') {
+    scoreLucro += 10;
+    scoreProdutividade += 10;
+    scoreSolos += 20;
+  } else {
+    scoreLucro -= 5;
+    scoreProdutividade += 5;
+    scoreSolos += 15;
+  }
+  document.getElementById("weed-management").classList.add("hidden");
+  updateDialogue(dicas.rotation); 
   document.getElementById("crop-rotation").classList.remove("hidden");
 }
 
-
-    function handleCropRotation(type) {
-      if (type === 'diversificada') {
-        scoreLucro += 15;
-        scoreProdutividade += 20;
-        scoreSolos += 25;
-      } else {
-        scoreLucro -= 10;
-        scoreProdutividade -= 5;
-        scoreSolos -= 15;
-      }
-      document.getElementById("crop-rotation").classList.add("hidden");
-      updateDialogue(dicas.postHarvest); // Dica para o pós-colheita
+function handleCropRotation(type) {
+  if (type === 'diversificada') {
+    scoreLucro += 10;
+    scoreProdutividade += 20;
+    scoreSolos += 25;
+  } else {
+    scoreLucro -= 10;
+    scoreProdutividade -= 5;
+    scoreSolos -= 15;
+  }
+  document.getElementById("crop-rotation").classList.add("hidden");
+  updateDialogue(dicas.postHarvest); 
   document.getElementById("post-harvest").classList.remove("hidden");
 }
 
-
-    function handlePostHarvest(choice) {
-      if (choice === 'queimar') {
-        scoreLucro +=25
-        scoreProdutividade -= 10;
-        scoreSolos -= 20;
-      } else if (choice === 'incorporar') {
-        scoreLucro +=20
-        scoreProdutividade += 15;
-        scoreSolos += 25;
-      } else {
-        scoreLucro += 10
-        scoreProdutividade -= 5;
-        scoreSolos -= 10;
-      }
-      updateDialogue("Boa escolha! Agora é só esperar os resultados. 🌱"); // Dica final
+function handlePostHarvest(choice) {
+  if (choice === 'queimar') {
+    scoreProdutividade -= 10;
+    scoreSolos -= 20;
+  } else if (choice === 'incorporar') {
+    scoreProdutividade += 15;
+    scoreSolos += 20;
+  } else {
+    scoreProdutividade -= 5;
+    scoreSolos -= 10;
+  }
+  document.getElementById("post-harvest").classList.add("hidden");
+  updateDialogue("Boa escolha! Agora é só esperar os resultados. 🌱"); 
   showFinalScore();
 }
-let feedback = '';
-      let comedicComment = '';
-  // Comentários cômicos baseados no desempenho
-  if (scoreLucro > 40 && scoreProdutividade > 40 && scoreSolos > 40) {
-    feedback = 'Excelente trabalho! Você fez escolhas muito boas! Conseguiu Unir os aspctos mais importantes em uma plantação.';
+
+function showFinalScore() {
+  document.getElementById("final-screen").classList.remove("hidden");
+  document.getElementById("score-lucro").textContent = scoreLucro;
+  document.getElementById("score-produtividade").textContent = scoreProdutividade;
+  document.getElementById("score-solos").textContent = scoreSolos;
+
+  let feedback = '';
+  let comedicComment = '';
+  if (scoreLucro > 50 && scoreProdutividade > 50 && scoreSolos > 50) {
+    feedback = 'Excelente trabalho! Você fez escolhas muito boas!';
     comedicComment = 'Você é o Elon Musk da agricultura! 🚀🌱';
   } else if (scoreLucro > 30 || scoreProdutividade > 30 || scoreSolos > 30) {
     feedback = 'Bom trabalho, mas há áreas para melhorar!';
@@ -486,17 +500,9 @@ let feedback = '';
   }
   document.getElementById("feedback").textContent = feedback;
   document.getElementById("comedic-comment").textContent = comedicComment;
+}
 
-    function showFinalScore() {
-      document.getElementById("final-screen").classList.remove("hidden");
-      document.getElementById("score-lucro").textContent = scoreLucro;
-      document.getElementById("score-produtividade").textContent = scoreProdutividade;
-      document.getElementById("score-solos").textContent = scoreSolos;
-
-    }
-
-    function restartGame() {
-  // Reinicia os scores e seleções
+function restartGame() {
   scoreLucro = 0;
   scoreProdutividade = 0;
   scoreSolos = 0;
@@ -504,35 +510,14 @@ let feedback = '';
   selectedFertilization = '';
   currentEvent = {};
 
-  // Oculta todas as perguntas e a tela de resultados
   const allQuestionBoxes = document.querySelectorAll('.question-box, .event-box, #final-screen');
   allQuestionBoxes.forEach(box => box.classList.add('hidden'));
 
-  // Exibe o botão de iniciar e oculta o contêiner do jogo
   document.getElementById("start-btn").classList.remove("hidden");
   document.getElementById("game-container").classList.add("hidden");
 
-  // Exibe a primeira pergunta ao reiniciar
   document.getElementById("seed-choice").classList.remove("hidden");
-}function restartGame() {
-  // Reinicia os scores e seleções
-  scoreLucro = 0;
-  scoreProdutividade = 0;
-  scoreSolos = 0;
-  selectedSeed = '';
-  selectedFertilization = '';
-  currentEvent = {};
-
-  // Oculta todas as perguntas e a tela de resultados
-  const allQuestionBoxes = document.querySelectorAll('.question-box, .event-box, #final-screen');
-  allQuestionBoxes.forEach(box => box.classList.add('hidden'));
-
-  // Exibe o botão de iniciar e oculta o contêiner do jogo
-  document.getElementById("start-btn").classList.remove("hidden");
-  document.getElementById("game-container").classList.add("hidden");
-
-  // Exibe a primeira pergunta ao reiniciar
-  document.getElementById("seed-choice").classList.remove("hidden");
+  updateDialogue(dicas.seed); 
 }
   </script>
 
