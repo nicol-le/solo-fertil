@@ -206,7 +206,7 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  max-width: 300px;
+  max-width: 200px;
   font-size: 16px;
   color: #2E8B57;
   position: relative;
@@ -313,12 +313,13 @@
     </div>
     <div id="character-container">
       <div id="character">
-        <img src="sojafeliz.png" alt="Soja feliz" id="soja-img" style="width: 300px; height: auto;">
+        <img src="sojafeliz.png" alt="Soja feliz" id="soja-img" style="width: 100px; height: auto;">
       </div>
   
 <!-- Personagem e caixa de diálogo -->
 
   <script>
+
     let scoreLucro = 0;
     let scoreProdutividade = 0;
     let scoreSolos = 0;
@@ -376,11 +377,26 @@
       document.getElementById("event").classList.add("hidden");
       document.getElementById("fertilization").classList.remove("hidden");
     }
+    const dicas = {
+  seed: "Escolha sabiamente! Sementes orgânicas são mais sustentáveis, mas podem ser menos produtivas.",
+  event: "Cuidado com eventos aleatórios! Eles podem afetar sua plantação.",
+  fertilization: "Adubação verde é ótima para o solo, mas pode exigir mais trabalho.",
+  water: "Gotejamento economiza água, mas aspersão é mais rápida!",
+  weed: "Capina manual é sustentável, mas herbicidas são mais eficientes.",
+  rotation: "Rotação diversificada melhora o solo e reduz pragas!",
+  postHarvest: "Incorporar os restos ao solo é a melhor opção para fertilidade!"
+};
+
+function updateDialogue(dica) {
+  document.getElementById("dialogue-text").textContent = dica;
+}
 
     function handleFertilization(type) {
       selectedFertilization = type;
       document.getElementById("fertilization").classList.add("hidden");
+      updateDialogue(dicas.water);
       document.getElementById("water-management").classList.remove("hidden");
+
     }
 
     function handleWaterManagement(choice) {
@@ -398,6 +414,7 @@
         scoreSolos -= 5;
       }
       document.getElementById("water-management").classList.add("hidden");
+      updateDialogue(dicas.weed);
       document.getElementById("weed-management").classList.remove("hidden");
     }
 
@@ -416,8 +433,10 @@
         scoreSolos += 15;
       }
       document.getElementById("weed-management").classList.add("hidden");
-      document.getElementById("crop-rotation").classList.remove("hidden");
-    }
+      updateDialogue(dicas.rotation); // Dica para a rotação de culturas
+  document.getElementById("crop-rotation").classList.remove("hidden");
+}
+
 
     function handleCropRotation(type) {
       if (type === 'diversificada') {
@@ -430,8 +449,10 @@
         scoreSolos -= 15;
       }
       document.getElementById("crop-rotation").classList.add("hidden");
-      document.getElementById("post-harvest").classList.remove("hidden");
-    }
+      updateDialogue(dicas.postHarvest); // Dica para o pós-colheita
+  document.getElementById("post-harvest").classList.remove("hidden");
+}
+
 
     function handlePostHarvest(choice) {
       if (choice === 'queimar') {
@@ -444,19 +465,11 @@
         scoreProdutividade -= 5;
         scoreSolos -= 10;
       }
-      document.getElementById("post-harvest").classList.add("hidden");
-      showFinalScore();
-    }
-
-    function showFinalScore() {
-  document.getElementById("final-screen").classList.remove("hidden");
-  document.getElementById("score-lucro").textContent = scoreLucro;
-  document.getElementById("score-produtividade").textContent = scoreProdutividade;
-  document.getElementById("score-solos").textContent = scoreSolos;
-
-  let feedback = '';
-  let comedicComment = '';
-
+      updateDialogue("Boa escolha! Agora é só esperar os resultados. 🌱"); // Dica final
+  showFinalScore();
+}
+let feedback = '';
+      let comedicComment = '';
   // Comentários cômicos baseados no desempenho
   if (scoreLucro > 50 && scoreProdutividade > 50 && scoreSolos > 50) {
     feedback = 'Excelente trabalho! Você fez escolhas muito boas!';
@@ -468,78 +481,58 @@
     feedback = 'Você precisa repensar suas escolhas para melhorar sua fazenda!';
     comedicComment = 'Parece que você plantou batatas na areia... 🥔🏖️';
   }
-
-  // Adiciona feedback e comentário cômico
   document.getElementById("feedback").textContent = feedback;
   document.getElementById("comedic-comment").textContent = comedicComment;
-}
+
+    function showFinalScore() {
+      document.getElementById("final-screen").classList.remove("hidden");
+      document.getElementById("score-lucro").textContent = scoreLucro;
+      document.getElementById("score-produtividade").textContent = scoreProdutividade;
+      document.getElementById("score-solos").textContent = scoreSolos;
+
+    }
 
     function restartGame() {
-      scoreLucro = 0;
-      scoreProdutividade = 0;
-      scoreSolos = 0;
-      selectedSeed = '';
-      selectedFertilization = '';
-      currentEvent = {};
-      
-      document.getElementById("final-screen").classList.add("hidden");
-      document.getElementById("start-btn").classList.remove("hidden");
-    }
-// Dicas para cada pergunta
-const dicas = {
-  seed: "Escolha sabiamente! Sementes orgânicas são mais sustentáveis, mas podem ser menos produtivas.",
-  event: "Cuidado com eventos aleatórios! Eles podem afetar sua plantação.",
-  fertilization: "Adubação verde é ótima para o solo, mas pode exigir mais trabalho.",
-  water: "Gotejamento economiza água, mas aspersão é mais rápida!",
-  weed: "Capina manual é sustentável, mas herbicidas são mais eficientes.",
-  rotation: "Rotação diversificada melhora o solo e reduz pragas!",
-  postHarvest: "Incorporar os restos ao solo é a melhor opção para fertilidade!"
-};
+  // Reinicia os scores e seleções
+  scoreLucro = 0;
+  scoreProdutividade = 0;
+  scoreSolos = 0;
+  selectedSeed = '';
+  selectedFertilization = '';
+  currentEvent = {};
 
-// Função para atualizar a dica
-function updateDialogue(dica) {
-  document.getElementById("dialogue-text").textContent = dica;
-}
+  // Oculta todas as perguntas e a tela de resultados
+  const allQuestionBoxes = document.querySelectorAll('.question-box, .event-box, #final-screen');
+  allQuestionBoxes.forEach(box => box.classList.add('hidden'));
 
-// Atualize as dicas em cada função de pergunta
-function selectSeed(seedType) {
-  selectedSeed = seedType;
-  document.getElementById("seed-choice").classList.add("hidden");
-  updateDialogue(dicas.event); // Dica para o evento
-  triggerRandomEvent();
-}
+  // Exibe o botão de iniciar e oculta o contêiner do jogo
+  document.getElementById("start-btn").classList.remove("hidden");
+  document.getElementById("game-container").classList.add("hidden");
 
-function handleFertilization(type) {
-  selectedFertilization = type;
-  document.getElementById("fertilization").classList.add("hidden");
-  updateDialogue(dicas.water); // Dica para o manejo da água
-  document.getElementById("water-management").classList.remove("hidden");
-}
+  // Exibe a primeira pergunta ao reiniciar
+  document.getElementById("seed-choice").classList.remove("hidden");
+}function restartGame() {
+  // Reinicia os scores e seleções
+  scoreLucro = 0;
+  scoreProdutividade = 0;
+  scoreSolos = 0;
+  selectedSeed = '';
+  selectedFertilization = '';
+  currentEvent = {};
 
-function handleWaterManagement(choice) {
-  // ... (código existente)
-  updateDialogue(dicas.weed); // Dica para o controle de plantas daninhas
-  document.getElementById("weed-management").classList.remove("hidden");
-}
+  // Oculta todas as perguntas e a tela de resultados
+  const allQuestionBoxes = document.querySelectorAll('.question-box, .event-box, #final-screen');
+  allQuestionBoxes.forEach(box => box.classList.add('hidden'));
 
-function handleWeedManagement(choice) {
-  // ... (código existente)
-  updateDialogue(dicas.rotation); // Dica para a rotação de culturas
-  document.getElementById("crop-rotation").classList.remove("hidden");
-}
+  // Exibe o botão de iniciar e oculta o contêiner do jogo
+  document.getElementById("start-btn").classList.remove("hidden");
+  document.getElementById("game-container").classList.add("hidden");
 
-function handleCropRotation(type) {
-  // ... (código existente)
-  updateDialogue(dicas.postHarvest); // Dica para o pós-colheita
-  document.getElementById("post-harvest").classList.remove("hidden");
-}
-
-function handlePostHarvest(choice) {
-  // ... (código existente)
-  updateDialogue("Boa escolha! Agora é só esperar os resultados. 🌱"); // Dica final
-  showFinalScore();
+  // Exibe a primeira pergunta ao reiniciar
+  document.getElementById("seed-choice").classList.remove("hidden");
 }
   </script>
 
 </body>
 </html>
+
