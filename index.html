@@ -401,17 +401,17 @@ function updateDialogue(dica) {
 
     function handleWaterManagement(choice) {
       if (choice === 'aspersao') {
-        scoreLucro += 5;
-        scoreProdutividade += 20;
-        scoreSolos -= 10;
+        scoreLucro += 15;
+        scoreProdutividade += 25;
+        scoreSolos += 10;
       } else if (choice === 'gotejamento') {
-        scoreLucro += 10;
-        scoreProdutividade += 10;
+        scoreLucro += 20;
+        scoreProdutividade += 25;
         scoreSolos += 15;
       } else {
         scoreLucro -= 10;
         scoreProdutividade -= 20;
-        scoreSolos -= 5;
+        scoreSolos -= 10;
       }
       document.getElementById("water-management").classList.add("hidden");
       updateDialogue(dicas.weed);
@@ -420,15 +420,15 @@ function updateDialogue(dica) {
 
     function handleWeedManagement(choice) {
       if (choice === 'herbicida') {
-        scoreLucro += 5;
+        scoreLucro += 15;
         scoreProdutividade += 15;
-        scoreSolos -= 20;
+        scoreSolos -= 10;
       } else if (choice === 'cobertura') {
-        scoreLucro += 10;
-        scoreProdutividade += 10;
+        scoreLucro += 24;
+        scoreProdutividade += 30;
         scoreSolos += 20;
       } else {
-        scoreLucro -= 5;
+        scoreLucro -= 15;
         scoreProdutividade += 5;
         scoreSolos += 15;
       }
@@ -440,7 +440,7 @@ function updateDialogue(dica) {
 
     function handleCropRotation(type) {
       if (type === 'diversificada') {
-        scoreLucro += 10;
+        scoreLucro += 15;
         scoreProdutividade += 20;
         scoreSolos += 25;
       } else {
@@ -456,12 +456,15 @@ function updateDialogue(dica) {
 
     function handlePostHarvest(choice) {
       if (choice === 'queimar') {
+        scoreLucro +=25
         scoreProdutividade -= 10;
         scoreSolos -= 20;
       } else if (choice === 'incorporar') {
+        scoreLucro +=20
         scoreProdutividade += 15;
-        scoreSolos += 20;
+        scoreSolos += 25;
       } else {
+        scoreLucro += 10
         scoreProdutividade -= 5;
         scoreSolos -= 10;
       }
@@ -471,8 +474,8 @@ function updateDialogue(dica) {
 let feedback = '';
       let comedicComment = '';
   // Comentários cômicos baseados no desempenho
-  if (scoreLucro > 50 && scoreProdutividade > 50 && scoreSolos > 50) {
-    feedback = 'Excelente trabalho! Você fez escolhas muito boas!';
+  if (scoreLucro > 40 && scoreProdutividade > 40 && scoreSolos > 40) {
+    feedback = 'Excelente trabalho! Você fez escolhas muito boas! Conseguiu Unir os aspctos mais importantes em uma plantação.';
     comedicComment = 'Você é o Elon Musk da agricultura! 🚀🌱';
   } else if (scoreLucro > 30 || scoreProdutividade > 30 || scoreSolos > 30) {
     feedback = 'Bom trabalho, mas há áreas para melhorar!';
