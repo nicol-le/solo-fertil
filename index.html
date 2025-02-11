@@ -368,19 +368,19 @@ function selectSeed(seedType) {
 function triggerRandomEvent() {
   const events = [
     { name: "Chuva forte", message: "Uma chuva forte está ocorrendo. O que fazer?", options: [
-      { text: "Deixar a chuva agir", impact: { produtividade: -5, solos: 5 } },
-      { text: "Usar irrigação para evitar danos", impact: { produtividade: 10, solos: -5 } },
-      { text: "Cobertura com plástico", impact: { produtividade: -10, solos: 0 } }
+      { text: "Deixar a chuva agir", impact: { lucro: 10, produtividade: -5, solos: 5 } },
+      { text: "Usar irrigação para evitar danos", impact: { lucro: 15, produtividade: 10, solos: -5 } },
+      { text: "Cobertura com plástico", impact: { lucro: 5, produtividade: -10, solos: 0 } }
     ]},
     { name: "Granizo", message: "O granizo está afetando sua plantação. Como reagir?", options: [
-      { text: "Esperar que o granizo passe", impact: { produtividade: -20, solos: -10 } },
-      { text: "Cobertura imediata", impact: { produtividade: 5, solos: 10 } },
-      { text: "Abandonar a plantação", impact: { produtividade: -30, solos: 0 } }
+      { text: "Esperar que o granizo passe", impact: { lucro: -10, produtividade: -20, solos: -10 } },
+      { text: "Cobertura imediata", impact: { lucro: 10, produtividade: 5, solos: 10 } },
+      { text: "Abandonar a plantação", impact: { lucro: -50, produtividade: -30, solos: 0 } }
     ]},
     { name: "Ataque de lagartas", message: "Lagartas invadiram sua plantação. Como reagir?", options: [
-      { text: "Usar defensivos agrícolas", impact: { produtividade: 10, solos: -15 } },
-      { text: "Usar controle biológico", impact: { produtividade: 5, solos: 5 } },
-      { text: "Deixar as lagartas agirem", impact: { produtividade: -10, solos: 0 } }
+      { text: "Usar defensivos agrícolas", impact: { lucro: 10, produtividade: 10, solos: -15 } },
+      { text: "Usar controle biológico", impact: { lucro: 5, produtividade: 5, solos: 5 } },
+      { text: "Deixar as lagartas agirem", impact: { lucro: -10, produtividade: -10, solos: 0 } }
     ]}
   ];
 
@@ -413,12 +413,12 @@ function handleFertilization(type) {
 
 function handleWaterManagement(choice) {
   if (choice === 'aspersao') {
-    scoreLucro += 5;
-    scoreProdutividade += 20;
-    scoreSolos -= 10;
-  } else if (choice === 'gotejamento') {
     scoreLucro += 10;
-    scoreProdutividade += 10;
+    scoreProdutividade += 25;
+    scoreSolos += 10;
+  } else if (choice === 'gotejamento') {
+    scoreLucro += 15;
+    scoreProdutividade += 20;
     scoreSolos += 15;
   } else {
     scoreLucro -= 10;
@@ -432,13 +432,13 @@ function handleWaterManagement(choice) {
 
 function handleWeedManagement(choice) {
   if (choice === 'herbicida') {
-    scoreLucro += 5;
-    scoreProdutividade += 15;
+    scoreLucro += 15;
+    scoreProdutividade += 25;
     scoreSolos -= 20;
   } else if (choice === 'cobertura') {
-    scoreLucro += 10;
-    scoreProdutividade += 10;
-    scoreSolos += 20;
+    scoreLucro += 25;
+    scoreProdutividade += 20;
+    scoreSolos += 25;
   } else {
     scoreLucro -= 5;
     scoreProdutividade += 5;
@@ -451,12 +451,12 @@ function handleWeedManagement(choice) {
 
 function handleCropRotation(type) {
   if (type === 'diversificada') {
-    scoreLucro += 10;
+    scoreLucro += 20;
     scoreProdutividade += 20;
     scoreSolos += 25;
   } else {
-    scoreLucro -= 10;
-    scoreProdutividade -= 5;
+    scoreLucro += 10;
+    scoreProdutividade += 5;
     scoreSolos -= 15;
   }
   document.getElementById("crop-rotation").classList.add("hidden");
@@ -466,12 +466,15 @@ function handleCropRotation(type) {
 
 function handlePostHarvest(choice) {
   if (choice === 'queimar') {
+    scoreLucro +=25;
     scoreProdutividade -= 10;
     scoreSolos -= 20;
   } else if (choice === 'incorporar') {
-    scoreProdutividade += 15;
-    scoreSolos += 20;
+    scoreLucro +=25;
+    scoreProdutividade += 20;
+    scoreSolos += 25;
   } else {
+    scoreLucro += 10;
     scoreProdutividade -= 5;
     scoreSolos -= 10;
   }
@@ -488,10 +491,10 @@ function showFinalScore() {
 
   let feedback = '';
   let comedicComment = '';
-  if (scoreLucro > 50 && scoreProdutividade > 50 && scoreSolos > 50) {
+  if (scoreLucro > 40 && scoreProdutividade > 40 && scoreSolos > 40) {
     feedback = 'Excelente trabalho! Você fez escolhas muito boas!';
     comedicComment = 'Você é o Elon Musk da agricultura! 🚀🌱';
-  } else if (scoreLucro > 30 || scoreProdutividade > 30 || scoreSolos > 30) {
+  } else if (scoreLucro > 25 || scoreProdutividade > 25 || scoreSolos > 25) {
     feedback = 'Bom trabalho, mas há áreas para melhorar!';
     comedicComment = 'Quase lá! Só falta plantar um pouco mais de café... ☕';
   } else {
