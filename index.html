@@ -452,11 +452,11 @@ function handleWeedManagement(choice) {
 
 function handleCropRotation(type) {
   if (type === 'diversificada') {
-    scoreLucro += 20;
+    scoreLucro += 10;
     scoreProdutividade += 20;
     scoreSolos += 25;
   } else {
-    scoreLucro += 10;
+    scoreLucro += 20;
     scoreProdutividade += 5;
     scoreSolos -= 15;
   }
@@ -471,7 +471,7 @@ function handlePostHarvest(choice) {
     scoreProdutividade -= 10;
     scoreSolos -= 20;
   } else if (choice === 'incorporar') {
-    scoreLucro +=25;
+    scoreLucro +=20;
     scoreProdutividade += 20;
     scoreSolos += 25;
   } else {
@@ -492,10 +492,10 @@ function showFinalScore() {
 
   let feedback = '';
   let comedicComment = '';
-  if (scoreLucro > 40 && scoreProdutividade > 40 && scoreSolos > 40) {
+  if (scoreLucro > 70 && scoreProdutividade > 70 && scoreSolos > 60) {
     feedback = 'Excelente trabalho! Você fez escolhas muito boas! Seu bolso e solo estão felizes.';
     comedicComment = 'Você é o Elon Musk da agricultura! Seu solo está radiante 🚀🌱';
-  } else if (scoreLucro > 25 || scoreProdutividade > 25 || scoreSolos > 25) {
+  } else if (scoreLucro > 50 || scoreProdutividade > 50 || scoreSolos > 50) {
     feedback = 'Bom trabalho, mas há áreas para melhorar!';
     comedicComment = 'Quase lá! Só falta plantar um pouco mais de café... ou adubo...ou estudo... ☕';
   } else {
