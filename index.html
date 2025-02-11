@@ -3,95 +3,328 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogo de Escolhas Agrícolas</title>
+  <title>Solo Fértil</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f0f0f0, #d0e8d0); /* Gradiente suave */
       text-align: center;
       margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #f9fff9;
       padding: 20px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .hidden {
-      display: none;
+
+    .logo {
+      max-width: 300px;
+      margin-right: 20px;
     }
+
     .game-container {
       padding: 20px;
     }
+
     .question-box {
       background: white;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 30px;
+      border-radius: 15px;
       margin: 20px auto;
       width: 80%;
       max-width: 600px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      color: #2E8B57;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+    .question-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .question-box h2 {
+      color: #2E8B57;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       margin: 10px;
       cursor: pointer;
       border: none;
-      border-radius: 5px;
+      border-radius: 25px;
       background-color: #4CAF50;
       color: white;
       font-size: 16px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
+
     button:hover {
       background-color: #45a049;
+      transform: scale(1.05);
     }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* Estilo para eventos de dano - alerta */
+    .event-box {
+      background-color: #FF6347;
+      color: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .event-box h2 {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Estilo de alerta vermelho */
+    .alert-box {
+      background-color: #FF0000;
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      font-weight: bold;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
     #final-score p {
       font-size: 18px;
       margin: 10px 0;
     }
+
+    /* Ícones */
+    .icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+
+    /* Animação de entrada */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Progresso do jogo */
+    .progress-bar {
+      width: 80%;
+      max-width: 600px;
+      height: 10px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0;
+      transition: width 0.5s ease;
+    }
+
+    /* Feedback final */
+    #final-screen {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #final-screen h2 {
+      color: #2E8B57;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    #final-score p {
+      font-size: 20px;
+      margin: 15px 0;
+    }
+
+    #final-score span {
+      font-weight: bold;
+      color: #4CAF50;
+    }
+  /* Estilo do personagem e caixa de diálogo */
+#character-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 30px; /* Reduzi o espaço entre a caixa de diálogo e o personagem */
+}
+
+#character img {
+  width: 120px; /* Tamanho aumentado */
+  height: auto;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+#dialogue-box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  font-size: 16px;
+  color: #2E8B57;
+  position: relative;
+  bottom: 40px;
+  text-align: center; /* Centraliza o texto horizontalmente */
+  display: flex; /* Adicionado para centralização vertical */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+}
+
+#dialogue-box::before {
+  content: '';
+  position: absolute;
+  bottom: 15px; /* Ajustei a posição vertical do triângulo */
+  left: 20px; /* Posiciona o triângulo à esquerda */
+  border-width: 20px 10px 10px 0; /* Triângulo apontando para a esquerda */
+  border-style: solid;
+  border-color: transparent white transparent transparent; /* Cor do triângulo */
+}
   </style>
 </head>
 <body>
-
+  <header>
+    <img src="Solo Fértil.png" alt="Logo Solo Fertil" class="logo">
+  
+  </header>
   <button id="start-btn" onclick="startGame()">Iniciar Jogo</button>
 
   <div id="game-container" class="hidden">
-    <div id="seed-choice" class="question-box">
-      <h2>Escolha o tipo de semente:</h2>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div id="seed-choice" class="question-box fade-in">
+      <h2>🌱 Escolha o tipo de semente:</h2>
       <button onclick="selectSeed('convencional')">Semente Convencional</button>
       <button onclick="selectSeed('orgânica')">Semente Orgânica</button>
       <button onclick="selectSeed('transgênica')">Semente Transgênica</button>
     </div>
     
-    <div id="pest-attack" class="question-box hidden">
-      <h2>ATENÇÃO: Um ataque de lagartas está ocorrendo!</h2>
-      <button onclick="handlePestChoice('defensivo')">Usar defensivo agrícola</button>
-      <button onclick="handlePestChoice('alternativo')">Aplicar alternativos biológicos</button>
-      <button onclick="handlePestChoice('continuar')">Fé na mortes das lagartas</button>
+    <div id="event" class="event-box hidden fade-in">
+      <h2>⚠️ Evento Aleatório!</h2>
+      <p id="event-message"></p>
+      <button id="event-option-1" onclick="handleEventChoice(1)">Opção 1</button>
+      <button id="event-option-2" onclick="handleEventChoice(2)">Opção 2</button>
+      <button id="event-option-3" onclick="handleEventChoice(3)">Opção 3</button>
     </div>
-    
-    <div id="fertilization" class="question-box hidden">
-      <h2>Escolha o tipo de adubação:</h2>
+
+    <div id="fertilization" class="question-box hidden fade-in">
+      <h2>🌿 Escolha o tipo de adubação:</h2>
       <button onclick="handleFertilization('convencional')">Adubação Convencional</button>
       <button onclick="handleFertilization('verde')">Adubação Verde</button>
       <button onclick="handleFertilization('fe')">Apenas fé na terra</button>
     </div>
+    
+    <div id="water-management" class="question-box hidden fade-in">
+      <h2>💧 Qual o manejo da água?</h2>
+      <button onclick="handleWaterManagement('aspersao')">Irrigação por aspersão</button>
+      <button onclick="handleWaterManagement('gotejamento')">Gotejamento</button>
+      <button onclick="handleWaterManagement('chuva')">Depender da chuva</button>
+    </div>
+    
+    <div id="weed-management" class="question-box hidden fade-in">
+      <h2>🌾 Como controlar plantas daninhas?</h2>
+      <button onclick="handleWeedManagement('herbicida')">Herbicidas químicos</button>
+      <button onclick="handleWeedManagement('cobertura')">Cobertura vegetal</button>
+      <button onclick="handleWeedManagement('capina')">Capina manual</button>
+    </div>
 
-    <div id="game-over" class="question-box hidden">
-      <h2>Game Over</h2>
+    <div id="crop-rotation" class="question-box hidden fade-in">
+      <h2>🔄 Qual estratégia de rotação de culturas você deseja usar?</h2>
+      <button onclick="handleCropRotation('diversificada')">Diversificada (várias culturas)</button>
+      <button onclick="handleCropRotation('monocultura')">Monocultura (uma única cultura)</button>
+    </div>
+
+    <div id="post-harvest" class="question-box hidden fade-in">
+      <h2>🌾 O que fazer após a colheita?</h2>
+      <button onclick="handlePostHarvest('queimar')">Queimar os restos</button>
+      <button onclick="handlePostHarvest('incorporar')">Incorporar os restos ao solo</button>
+      <button onclick="handlePostHarvest('descoberto')">Deixar o solo descoberto</button>
+    </div>
+
+    <div id="game-over" class="question-box hidden fade-in">
+      <h2>😢 Game Over</h2>
       <p id="game-over-message"></p>
       <button onclick="restartGame()">Reiniciar Jogo</button>
     </div>
-    
-    <div id="final-screen" class="question-box hidden">
-      <h2>Parabéns, você completou o jogo!</h2>
+
+    <div id="final-screen" class="question-box hidden fade-in">
+      <h2>🎉 Parabéns, você completou o jogo!</h2>
       <div id="final-score">
         <p>Lucro: <span id="score-lucro"></span>%</p>
         <p>Produtividade: <span id="score-produtividade"></span>%</p>
-        <p>Solos: <span id="score-solos"></span>%</p>
+        <p>Sustentabilidade: <span id="score-solos"></span>%</p>
       </div>
+      <p id="feedback"></p>
+      <p id="comedic-comment" style="font-style: italic; color: #4CAF50; font-size: 18px;"></p>
       <button onclick="restartGame()">Reiniciar Jogo</button>
     </div>
-  </div>
+    
+      <div id="dialogue-box">
+        <p id="dialogue-text">Olá! Vou te ajudar com algumas dicas. 😊</p>
+      </div>
+    </div>
+    <div id="character-container">
+      <div id="character">
+        <img src="sojafeliz.png" alt="Soja feliz" id="soja-img" style="width: 300px; height: auto;">
+      </div>
+  
+<!-- Personagem e caixa de diálogo -->
 
   <script>
+    let scoreLucro = 0;
+    let scoreProdutividade = 0;
+    let scoreSolos = 0;
     let selectedSeed = '';
     let selectedFertilization = '';
+    let currentEvent = {};
 
     function startGame() {
       document.getElementById("start-btn").classList.add("hidden");
@@ -102,71 +335,211 @@
     function selectSeed(seedType) {
       selectedSeed = seedType;
       document.getElementById("seed-choice").classList.add("hidden");
-      document.getElementById("pest-attack").classList.remove("hidden");
+      triggerRandomEvent();
     }
 
-    function handlePestChoice(choice) {
-      if (choice === 'defensivo' && selectedSeed === 'orgânica') {
-        gameOver("Defensivos não são permitidos na agricultura orgânica!");
-      } else {
-        document.getElementById("pest-attack").classList.add("hidden");
-        document.getElementById("fertilization").classList.remove("hidden");
-      }
+    function triggerRandomEvent() {
+      // Gera um evento aleatório
+      const events = [
+        { name: "Chuva forte", message: "Uma chuva forte está ocorrendo. O que fazer?", options: [
+          { text: "Deixar a chuva agir", impact: { produtividade: -5, solos: 5 } },
+          { text: "Usar irrigação para evitar danos", impact: { produtividade: 10, solos: -5 } },
+          { text: "Cobertura com plástico", impact: { produtividade: -10, solos: 0 } }
+        ]},
+        { name: "Granizo", message: "O granizo está afetando sua plantação. Como reagir?", options: [
+          { text: "Esperar que o granizo passe", impact: { produtividade: -20, solos: -10 } },
+          { text: "Cobertura imediata", impact: { produtividade: 5, solos: 10 } },
+          { text: "Abandonar a plantação", impact: { produtividade: -30, solos: 0 } }
+        ]},
+        { name: "Ataque de lagartas", message: "Lagartas invadiram sua plantação. Como reagir?", options: [
+          { text: "Usar defensivos agrícolas", impact: { produtividade: 10, solos: -15 } },
+          { text: "Usar controle biológico", impact: { produtividade: 5, solos: 5 } },
+          { text: "Deixar as lagartas agirem", impact: { produtividade: -10, solos: 0 } }
+        ]}
+      ];
+
+      currentEvent = events[Math.floor(Math.random() * events.length)];
+      
+      document.getElementById("event-message").textContent = currentEvent.message;
+      document.getElementById("event-option-1").textContent = currentEvent.options[0].text;
+      document.getElementById("event-option-2").textContent = currentEvent.options[1].text;
+      document.getElementById("event-option-3").textContent = currentEvent.options[2].text;
+
+      document.getElementById("event").classList.remove("hidden");
+    }
+
+    function handleEventChoice(choice) {
+      const selectedOption = currentEvent.options[choice - 1];
+      scoreProdutividade += selectedOption.impact.produtividade;
+      scoreSolos += selectedOption.impact.solos;
+      
+      document.getElementById("event").classList.add("hidden");
+      document.getElementById("fertilization").classList.remove("hidden");
     }
 
     function handleFertilization(type) {
       selectedFertilization = type;
-      showFinalScreen();
-    }
-
-    function gameOver(message) {
-      hideAllScreens();
-      document.getElementById("game-over").classList.remove("hidden");
-      document.getElementById("game-over-message").textContent = message;
-    }
-
-    function showFinalScreen() {
-      hideAllScreens();
-      document.getElementById("final-screen").classList.remove("hidden");
-      
-      let lucro, produtividade, solos;
-      if (selectedFertilization === 'convencional') {
-        lucro = getRandomInt(70, 90);
-        produtividade = getRandomInt(80, 100);
-        solos = getRandomInt(30, 50);
-      } else if (selectedFertilization === 'verde') {
-        lucro = getRandomInt(60, 80);
-        produtividade = getRandomInt(70, 90);
-        solos = getRandomInt(80, 100);
-      } else {
-        lucro = getRandomInt(10, 30);
-        produtividade = getRandomInt(40, 60);
-        solos = getRandomInt(20, 40);
-      }
-      
-      document.getElementById("score-lucro").textContent = lucro;
-      document.getElementById("score-produtividade").textContent = produtividade;
-      document.getElementById("score-solos").textContent = solos;
-    }
-
-    function hideAllScreens() {
-      document.getElementById("seed-choice").classList.add("hidden");
-      document.getElementById("pest-attack").classList.add("hidden");
       document.getElementById("fertilization").classList.add("hidden");
-      document.getElementById("game-over").classList.add("hidden");
-      document.getElementById("final-screen").classList.add("hidden");
+      document.getElementById("water-management").classList.remove("hidden");
     }
+
+    function handleWaterManagement(choice) {
+      if (choice === 'aspersao') {
+        scoreLucro += 5;
+        scoreProdutividade += 20;
+        scoreSolos -= 10;
+      } else if (choice === 'gotejamento') {
+        scoreLucro += 10;
+        scoreProdutividade += 10;
+        scoreSolos += 15;
+      } else {
+        scoreLucro -= 10;
+        scoreProdutividade -= 20;
+        scoreSolos -= 5;
+      }
+      document.getElementById("water-management").classList.add("hidden");
+      document.getElementById("weed-management").classList.remove("hidden");
+    }
+
+    function handleWeedManagement(choice) {
+      if (choice === 'herbicida') {
+        scoreLucro += 5;
+        scoreProdutividade += 15;
+        scoreSolos -= 20;
+      } else if (choice === 'cobertura') {
+        scoreLucro += 10;
+        scoreProdutividade += 10;
+        scoreSolos += 20;
+      } else {
+        scoreLucro -= 5;
+        scoreProdutividade += 5;
+        scoreSolos += 15;
+      }
+      document.getElementById("weed-management").classList.add("hidden");
+      document.getElementById("crop-rotation").classList.remove("hidden");
+    }
+
+    function handleCropRotation(type) {
+      if (type === 'diversificada') {
+        scoreLucro += 10;
+        scoreProdutividade += 20;
+        scoreSolos += 25;
+      } else {
+        scoreLucro -= 10;
+        scoreProdutividade -= 5;
+        scoreSolos -= 15;
+      }
+      document.getElementById("crop-rotation").classList.add("hidden");
+      document.getElementById("post-harvest").classList.remove("hidden");
+    }
+
+    function handlePostHarvest(choice) {
+      if (choice === 'queimar') {
+        scoreProdutividade -= 10;
+        scoreSolos -= 20;
+      } else if (choice === 'incorporar') {
+        scoreProdutividade += 15;
+        scoreSolos += 20;
+      } else {
+        scoreProdutividade -= 5;
+        scoreSolos -= 10;
+      }
+      document.getElementById("post-harvest").classList.add("hidden");
+      showFinalScore();
+    }
+
+    function showFinalScore() {
+  document.getElementById("final-screen").classList.remove("hidden");
+  document.getElementById("score-lucro").textContent = scoreLucro;
+  document.getElementById("score-produtividade").textContent = scoreProdutividade;
+  document.getElementById("score-solos").textContent = scoreSolos;
+
+  let feedback = '';
+  let comedicComment = '';
+
+  // Comentários cômicos baseados no desempenho
+  if (scoreLucro > 50 && scoreProdutividade > 50 && scoreSolos > 50) {
+    feedback = 'Excelente trabalho! Você fez escolhas muito boas!';
+    comedicComment = 'Você é o Elon Musk da agricultura! 🚀🌱';
+  } else if (scoreLucro > 30 || scoreProdutividade > 30 || scoreSolos > 30) {
+    feedback = 'Bom trabalho, mas há áreas para melhorar!';
+    comedicComment = 'Quase lá! Só falta plantar um pouco mais de café... ☕';
+  } else {
+    feedback = 'Você precisa repensar suas escolhas para melhorar sua fazenda!';
+    comedicComment = 'Parece que você plantou batatas na areia... 🥔🏖️';
+  }
+
+  // Adiciona feedback e comentário cômico
+  document.getElementById("feedback").textContent = feedback;
+  document.getElementById("comedic-comment").textContent = comedicComment;
+}
 
     function restartGame() {
+      scoreLucro = 0;
+      scoreProdutividade = 0;
+      scoreSolos = 0;
       selectedSeed = '';
       selectedFertilization = '';
-      hideAllScreens();
+      currentEvent = {};
+      
+      document.getElementById("final-screen").classList.add("hidden");
       document.getElementById("start-btn").classList.remove("hidden");
     }
+// Dicas para cada pergunta
+const dicas = {
+  seed: "Escolha sabiamente! Sementes orgânicas são mais sustentáveis, mas podem ser menos produtivas.",
+  event: "Cuidado com eventos aleatórios! Eles podem afetar sua plantação.",
+  fertilization: "Adubação verde é ótima para o solo, mas pode exigir mais trabalho.",
+  water: "Gotejamento economiza água, mas aspersão é mais rápida!",
+  weed: "Capina manual é sustentável, mas herbicidas são mais eficientes.",
+  rotation: "Rotação diversificada melhora o solo e reduz pragas!",
+  postHarvest: "Incorporar os restos ao solo é a melhor opção para fertilidade!"
+};
 
-    function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+// Função para atualizar a dica
+function updateDialogue(dica) {
+  document.getElementById("dialogue-text").textContent = dica;
+}
+
+// Atualize as dicas em cada função de pergunta
+function selectSeed(seedType) {
+  selectedSeed = seedType;
+  document.getElementById("seed-choice").classList.add("hidden");
+  updateDialogue(dicas.event); // Dica para o evento
+  triggerRandomEvent();
+}
+
+function handleFertilization(type) {
+  selectedFertilization = type;
+  document.getElementById("fertilization").classList.add("hidden");
+  updateDialogue(dicas.water); // Dica para o manejo da água
+  document.getElementById("water-management").classList.remove("hidden");
+}
+
+function handleWaterManagement(choice) {
+  // ... (código existente)
+  updateDialogue(dicas.weed); // Dica para o controle de plantas daninhas
+  document.getElementById("weed-management").classList.remove("hidden");
+}
+
+function handleWeedManagement(choice) {
+  // ... (código existente)
+  updateDialogue(dicas.rotation); // Dica para a rotação de culturas
+  document.getElementById("crop-rotation").classList.remove("hidden");
+}
+
+function handleCropRotation(type) {
+  // ... (código existente)
+  updateDialogue(dicas.postHarvest); // Dica para o pós-colheita
+  document.getElementById("post-harvest").classList.remove("hidden");
+}
+
+function handlePostHarvest(choice) {
+  // ... (código existente)
+  updateDialogue("Boa escolha! Agora é só esperar os resultados. 🌱"); // Dica final
+  showFinalScore();
+}
   </script>
+
 </body>
 </html>
