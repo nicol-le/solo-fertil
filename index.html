@@ -319,7 +319,9 @@
       <div id="character">
         <img src="sojafeliz.png" alt="Soja feliz" id="soja-img" style="width: 100px; height: auto;">
       </div>
-
+<audio id="rain-sound" src="chuva-forte-a-tarde-6106.mp3"></audio>
+    <audio id="hail-sound" src="strong-hail-falling-against-the-window-116182.mp3"></audio>
+    <audio id="harvest-sound" src="star-searching-184617.mp3"></audio>
 
  <script>
 
@@ -389,6 +391,9 @@ function triggerRandomEvent() {
   ];
 
   currentEvent = events[Math.floor(Math.random() * events.length)];
+  if (currentEvent.sound) {
+    document.getElementById(currentEvent.sound).play(); // Toca o som do evento
+  }
   
   document.getElementById("event-message").textContent = currentEvent.message;
   document.getElementById("event-option-1").textContent = currentEvent.options[0].text;
@@ -402,7 +407,14 @@ function handleEventChoice(choice) {
   const selectedOption = currentEvent.options[choice - 1];
   scoreProdutividade += selectedOption.impact.produtividade;
   scoreSolos += selectedOption.impact.solos;
-  
+
+  // Pausar e reiniciar o som do evento atual
+  if (currentEvent.sound) {
+    const eventSound = document.getElementById(currentEvent.sound);
+    eventSound.pause(); // Pausa o som
+    eventSound.currentTime = 0; // Reinicia o som para o início
+  }
+
   document.getElementById("event").classList.add("hidden");
   updateDialogue(dicas.fertilization);
   document.getElementById("fertilization").classList.remove("hidden");
@@ -513,21 +525,23 @@ function showFinalScore() {
 }
 
 function restartGame() {
-  scoreLucro = 0;
-  scoreProdutividade = 0;
-  scoreSolos = 0;
-  selectedSeed = '';
-  selectedFertilization = '';
-  currentEvent = {};
-
-  const allQuestionBoxes = document.querySelectorAll('.question-box, .event-box, #final-screen');
-  allQuestionBoxes.forEach(box => box.classList.add('hidden'));
-
-  document.getElementById("start-btn").classList.remove("hidden");
   document.getElementById("game-container").classList.add("hidden");
+  setTimeout(() => {
+    scoreLucro = 0;
+    scoreProdutividade = 0;
+    scoreSolos = 0;
+    selectedSeed = '';
+    selectedFertilization = '';
+    currentEvent = {};
 
-  document.getElementById("seed-choice").classList.remove("hidden");
-  updateDialogue(dicas.seed); 
+    const allQuestionBoxes = document.querySelectorAll('.question-box, .event-box, #final-screen');
+    allQuestionBoxes.forEach(box => box.classList.add('hidden'));
+
+    document.getElementById("start-btn").classList.remove("hidden");
+    document.getElementById("game-container").classList.remove("hidden");
+    document.getElementById("seed-choice").classList.remove("hidden");
+    updateDialogue(dicas.seed);
+  }, 500); // Aguarda 500ms antes de reiniciar
 }
   </script>
 
