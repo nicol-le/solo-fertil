@@ -369,17 +369,17 @@ function selectSeed(seedType) {
 function triggerRandomEvent() {
   const events = [
     { name: "Chuva forte", message: "Uma chuva forte está ocorrendo. O que fazer?", options: [
-      { text: "Deixar a chuva agir", impact: { lucro: 10, produtividade: -5, solos: 5 } },
+      { text: "Deixar a chuva agir", impact: { lucro: 15, produtividade: -5, solos: 5 } },
       { text: "Usar irrigação para evitar danos", impact: { lucro: 15, produtividade: 10, solos: -5 } },
-      { text: "Cobertura com plástico", impact: { lucro: 5, produtividade: -10, solos: 0 } }
+      { text: "Cobertura com plástico", impact: { lucro: 15, produtividade: -10, solos: 0 } }
     ]},
     { name: "Granizo", message: "O granizo está afetando sua plantação. Como reagir?", options: [
       { text: "Esperar que o granizo passe", impact: { lucro: -10, produtividade: -20, solos: -10 } },
-      { text: "Cobertura imediata", impact: { lucro: 10, produtividade: 5, solos: 10 } },
+      { text: "Cobertura imediata", impact: { lucro: 15, produtividade: 5, solos: 10 } },
       { text: "Abandonar a plantação", impact: { lucro: -50, produtividade: -30, solos: 0 } }
     ]},
     { name: "Ataque de lagartas", message: "Lagartas invadiram sua plantação. Como reagir?", options: [
-      { text: "Usar defensivos agrícolas", impact: { lucro: 10, produtividade: 10, solos: -15 } },
+      { text: "Usar defensivos agrícolas", impact: { lucro: 15, produtividade: 10, solos: -15 } },
       { text: "Usar controle biológico", impact: { lucro: 5, produtividade: 5, solos: 5 } },
       { text: "Deixar as lagartas agirem", impact: { lucro: -10, produtividade: -10, solos: 0 } }
     ]}
@@ -414,11 +414,11 @@ function handleFertilization(type) {
 
 function handleWaterManagement(choice) {
   if (choice === 'aspersao') {
-    scoreLucro += 10;
+    scoreLucro += 15;
     scoreProdutividade += 25;
     scoreSolos += 10;
   } else if (choice === 'gotejamento') {
-    scoreLucro += 15;
+    scoreLucro += 25;
     scoreProdutividade += 20;
     scoreSolos += 15;
   } else {
@@ -433,7 +433,7 @@ function handleWaterManagement(choice) {
 
 function handleWeedManagement(choice) {
   if (choice === 'herbicida') {
-    scoreLucro += 15;
+    scoreLucro += 20;
     scoreProdutividade += 25;
     scoreSolos -= 20;
   } else if (choice === 'cobertura') {
@@ -492,7 +492,7 @@ function showFinalScore() {
 
   let feedback = '';
   let comedicComment = '';
-  if (scoreLucro > 70 && scoreProdutividade > 70 && scoreSolos > 60) {
+  if (scoreLucro > 60 && scoreProdutividade > 60 && scoreSolos > 60) {
     feedback = 'Excelente trabalho! Você fez escolhas muito boas! Seu bolso e solo estão felizes.';
     comedicComment = 'Você é o Elon Musk da agricultura! Seu solo está radiante 🚀🌱';
   } else if (scoreLucro > 50 || scoreProdutividade > 50 || scoreSolos > 50) {
