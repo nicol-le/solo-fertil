@@ -296,12 +296,15 @@
       <button onclick="restartGame()">Reiniciar Jogo</button>
     </div>
 
-    <div id="final-screen" class="question-box hidden fade-in">
+   <div id="final-screen" class="question-box hidden fade-in">
       <h2>🎉 Parabéns, você completou o jogo!</h2>
       <div id="final-score">
         <p>Lucro: <span id="score-lucro"></span>%</p>
         <p>Produtividade: <span id="score-produtividade"></span>%</p>
         <p>Saúde do solo: <span id="score-solos"></span>%</p>
+      </div>
+      <div id="star-rating">
+        ⭐⭐⭐
       </div>
       <p id="feedback"></p>
       <p id="comedic-comment" style="font-style: italic; color: #4CAF50; font-size: 18px;"></p>
@@ -485,6 +488,9 @@ function handlePostHarvest(choice) {
 }
 
 function showFinalScore() {
+  const totalScore = (scoreLucro + scoreProdutividade + scoreSolos) / 3;
+  const stars = Math.round(totalScore / 20); 
+  document.getElementById("star-rating").innerHTML = "⭐".repeat(stars);
   document.getElementById("final-screen").classList.remove("hidden");
   document.getElementById("score-lucro").textContent = scoreLucro;
   document.getElementById("score-produtividade").textContent = scoreProdutividade;
